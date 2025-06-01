@@ -33,36 +33,11 @@ function parseCSVLine(line) {
     return values;
 }
 
-// Prospect data loaded from CSV
-const prospectsData = parseCSV(`name,type,location,address,phone,email,website,description,ai_opportunity
-Manchester City Council,Public Body,Manchester,"Town Hall, Albert Square, Manchester M60 2LA",0161 234 5000,enquiries@manchester.gov.uk,manchester.gov.uk,Major metropolitan council implementing digital-first strategy 2022-2026,"Digital transformation, AI automation, resident experience"
-Liverpool City Council,Public Body,Liverpool,"Municipal Buildings, Dale Street, Liverpool L2 2DH",0151 233 3000,contactcentre@liverpool.gov.uk,liverpool.gov.uk,Metropolitan council part of Liverpool City Region digital initiatives,"Smart city initiatives, AI-powered citizen engagement"
-Blackpool Council,Public Body,Blackpool,"Number One, Bickerstaffe Square, Blackpool FY1 3AH",01253 477477,enquiries@blackpool.gov.uk,blackpool.gov.uk,"Unitary authority with Silicon Sands digital vision, 200+ services","Smart city IoT, digital tourism, AI service delivery"
-Cheshire East Council,Public Body,Sandbach,"Westfields, Sandbach CW11 1HZ",0300 123 5500,customerservices@cheshireeast.gov.uk,cheshireeast.gov.uk,"Large unitary authority, 384k residents, 500+ services, digital strategy 2022-2024","Digital service redesign, customer experience platforms"
-Lancashire County Council,Public Body,Preston,"County Hall, Preston PR1 0LD",01772 254868,enquiries@lancashire.gov.uk,lancashire.gov.uk,"Large county council, 13,500 workforce, Digital First Strategy","Workforce digital empowerment, AI automation"
-Cumberland Council,Public Body,Carlisle,"Civic Centre, Carlisle CA3 8QG",01228 817000,info@cumberland.gov.uk,cumberland.gov.uk,"New unitary authority seeking Chief Innovation Officer, digital focus","Innovation leadership, digital transformation"
-Greater Manchester Combined Authority,Public Body,Manchester,"Tootal Buildings, 56 Oxford Street, Manchester M1 6EU",0161 778 7000,info@greatermanchester-ca.gov.uk,greatermanchester-ca.gov.uk,"Regional authority, £174bn GVA, 513k businesses, innovation funding","Regional AI strategy, innovation funding, smart cities"
-Manchester Museum,Cultural Institution,Manchester,"Oxford Road, Manchester M13 9PL",0161 275 2648,museum@manchester.ac.uk,museum.manchester.ac.uk,"130+ year old museum, recently transformed, University of Manchester","Collections digitization, visitor experience AI, virtual exhibitions"
-National Museums Liverpool,Cultural Institution,Liverpool,"127 Dale Street, Liverpool L2 2JH",0151 207 0001,info@liverpoolmuseums.org.uk,liverpoolmuseums.org.uk,"Seven venue museum group including Walker Art Gallery, World Museum","Multi-venue digital integration, AI visitor experiences"
-Science and Industry Museum,Cultural Institution,Manchester,"Liverpool Road, Manchester M3 4FP",0161 832 2244,info@scienceandindustrymuseum.org.uk,scienceandindustrymuseum.org.uk,"Major science museum undergoing transformation, interactive focus","Interactive AI exhibitions, immersive technology displays"
-The Lowry,Cultural Institution,Salford,"Pier 8, Salford Quays, Salford M50 3AZ",0161 876 2000,info@thelowry.com,thelowry.com,"Premier arts venue at MediaCityUK, theatre and gallery","Digital performance art, AI audience engagement"
-The Armitt Museum,Cultural Institution,Ambleside,"Rydal Road, Ambleside LA22 9BL",015394 31212,info@armitt.com,armitt.com,"Lake District museum, recent major technology upgrade","Visitor analytics, digital interpretation, AI guide systems"
-Walker Art Gallery,Cultural Institution,Liverpool,"William Brown Street, Liverpool L3 8EL",0151 478 4199,info@liverpoolmuseums.org.uk,liverpoolmuseums.org.uk,"Stunning collection of paintings and sculpture, 13th century to present","AI art analysis, virtual tours, digital collections"
-Tate Liverpool,Cultural Institution,Liverpool,"RIBA North, Mann Island, Liverpool L3 1DG",0151 702 7400,visiting.liverpool@tate.org.uk,tate.org.uk/visit/tate-liverpool,"Modern and contemporary art, temporary location during redevelopment","Digital art experiences, AI curation, virtual galleries"
-Peak AI,B2B Company,Manchester,"1 St Peters Square, Manchester M2 3DE",0161 818 6000,hello@peak.ai,peak.ai,"Leading AI company, #1 North West Tech 50, SaaS AI platform","Partnership opportunities, joint solution development"
-Blue Prism,B2B Company,Warrington,"2 Cinnamon Park, Crab Lane, Warrington WA2 0XP",01925 251 000,info@blueprism.com,blueprism.com,"Robotic Process Automation leader, automation and AI solutions","RPA + AI integration, intelligent automation"
-BrightHR,B2B Company,Manchester,"Northspring House, 36 Hornbeam Way, Manchester M40 7HX",0161 696 0549,hello@brighthr.com,brighthr.com,"HR technology platform serving SMEs, cloud-based solutions","AI-powered HR analytics, chatbot development"
-Kyndryl,B2B Company,Liverpool,Liverpool Tech Hub (New Location),TBD,info@kyndryl.com,kyndryl.com,"World's largest IT infrastructure services, 1000 new jobs planned","AI infrastructure services, digital transformation"
-SharkNinja,B2B Company,Manchester,Manchester Operations,TBD,info@sharkninja.com,sharkninja.com,"Consumer innovation, 700+ engineers, 3000+ patents, IoT focus","Smart product AI, IoT analytics, manufacturing AI"
-AccessPay,B2B Company,Manchester,Manchester Office,0161 806 0213,info@accesspay.com,accesspay.com,"Financial technology, payment solutions and automation","AI-powered payment processing, financial automation"
-Sorted Group,B2B Company,Manchester,"Ducie Street Warehouse, Manchester M1 2JW",0161 974 7600,hello@sorted.com,sorted.com,"E-commerce delivery management platform, logistics technology","AI delivery optimization, predictive logistics"
-CircleLoop,B2B Company,Rossendale,"The Riverside, Rossendale BB4 6JW",01706 562 020,hello@circleloop.com,circleloop.com,"Cloud communications platform, business phone systems","AI-powered call analytics, voice automation"
-Innovate UK Business Growth North West,Funding Body,Manchester,"Growth Company, 1 Piccadilly Gardens, Manchester M1 1RG",0161 232 8850,contact@innovateukbusinessgrowth.co.uk,growthco.uk,"Innovation funding delivery partner, SME support, tech commercialization","Funded project delivery, innovation consultancy"
-Health Innovation North West Coast,Funding Body,Preston,"Lancashire Teaching Hospitals, Preston PR2 9HT",01772 520263,team@healthinnovationnwc.nhs.uk,healthinnovationnwc.nhs.uk,"NHS innovation funding, SBRI Healthcare delivery, £5.6M facilitated","Healthcare AI solutions, digital health consulting"
-Business Growth Hub Greater Manchester,Funding Body,Manchester,"Churchgate House, 56 Oxford Street, Manchester M1 6EU",0161 359 3050,enquiries@businessgrowthhub.com,businessgrowthhub.com,"Business support and funding guidance, innovation vouchers £5k","Innovation voucher delivery, AI skills training"`);
+// Prospect data loaded from CSV (will be fetched dynamically)
+let prospectsData = [];
 
 // Global state
-let filteredData = [...prospectsData];
+let filteredData = []; // Initialize as empty, will be populated after data fetch
 let currentProspect = null;
 let prospectStatuses = new Map();
 let prospectNotes = new Map();
@@ -84,9 +59,33 @@ const modalCancel = document.getElementById('modalCancel');
 const modalSave = document.getElementById('modalSave');
 
 // Initialize the application
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     // Ensure modal is hidden on load
     document.getElementById('modalOverlay').classList.add('hidden');
+    
+    // Fetch and parse CSV data
+    try {
+        const response = await fetch('northwest_england_prospects.csv');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const csvString = await response.text();
+        prospectsData = parseCSV(csvString);
+        filteredData = [...prospectsData]; // Initialize filteredData after prospectsData is loaded
+    } catch (error) {
+        console.error('Error fetching or parsing CSV:', error);
+        // Fallback or error display if CSV fails to load
+        document.getElementById('prospectsTableBody').innerHTML = `
+            <tr>
+                <td colspan="6" class="empty-state">
+                    <h3>Error loading prospects data</h3>
+                    <p>Please check the CSV file and ensure it's accessible.</p>
+                </td>
+            </tr>
+        `;
+        return; // Stop initialization if data loading fails
+    }
+
     initializeFilters();
     renderTable();
     updateAnalytics();
