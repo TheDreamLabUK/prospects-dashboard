@@ -85,6 +85,8 @@ const modalSave = document.getElementById('modalSave');
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
+    // Ensure modal is hidden on load
+    document.getElementById('modalOverlay').classList.add('hidden');
     initializeFilters();
     renderTable();
     updateAnalytics();
