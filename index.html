@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Northwest England Prospects Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="container">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1>Prospects Dashboard</h1>
+                        <p class="header-subtitle">AI & Creative Technology Consulting Opportunities - Northwest England</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn--outline" id="exportBtn">Export Data</button>
+                        <button class="btn btn--primary" id="analyticsToggle">View Analytics</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Filters Section -->
+        <section class="filters-section">
+            <div class="container">
+                <div class="filters-grid">
+                    <div class="search-container">
+                        <input type="text" class="form-control search-input" id="searchInput" placeholder="Search prospects...">
+                    </div>
+                    <div class="filter-container">
+                        <select class="form-control" id="typeFilter">
+                            <option value="">All Types</option>
+                            <option value="Public Body">Public Bodies</option>
+                            <option value="Cultural Institution">Cultural Institutions</option>
+                            <option value="B2B Company">B2B Companies</option>
+                            <option value="Funding Body">Funding Bodies</option>
+                        </select>
+                    </div>
+                    <div class="filter-container">
+                        <select class="form-control" id="locationFilter">
+                            <option value="">All Locations</option>
+                        </select>
+                    </div>
+                    <div class="stats-summary">
+                        <span id="totalCount">25 prospects</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Section (Hidden by default) -->
+        <section class="analytics-section hidden" id="analyticsSection">
+            <div class="container">
+                <div class="analytics-grid">
+                    <div class="card analytics-card">
+                        <div class="card__body">
+                            <h3>Prospects by Type</h3>
+                            <div class="chart-container">
+                                <canvas id="typeChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card analytics-card">
+                        <div class="card__body">
+                            <h3>Geographic Distribution</h3>
+                            <div class="chart-container">
+                                <canvas id="locationChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card analytics-card">
+                        <div class="card__body">
+                            <h3>Summary Statistics</h3>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <span class="stat-number" id="totalProspects">25</span>
+                                    <span class="stat-label">Total Prospects</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" id="publicBodies">0</span>
+                                    <span class="stat-label">Public Bodies</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" id="culturalInstitutions">0</span>
+                                    <span class="stat-label">Cultural Institutions</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" id="b2bCompanies">0</span>
+                                    <span class="stat-label">B2B Companies</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <div class="container">
+                <!-- Prospects Table -->
+                <div class="card prospects-table-card">
+                    <div class="card__body">
+                        <div class="table-responsive">
+                            <table class="prospects-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Location</th>
+                                        <th>Contact</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="prospectsTableBody">
+                                    <!-- Table rows will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Prospect Detail Modal -->
+        <div class="modal-overlay hidden" id="modalOverlay">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 id="modalTitle">Prospect Details</h2>
+                    <button class="modal-close" id="modalClose">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="prospect-details-grid">
+                        <div class="detail-section">
+                            <h3>Contact Information</h3>
+                            <div class="contact-info">
+                                <p><strong>Address:</strong> <span id="modalAddress"></span></p>
+                                <p><strong>Phone:</strong> <a href="#" id="modalPhone" class="contact-link"></a></p>
+                                <p><strong>Email:</strong> <a href="#" id="modalEmail" class="contact-link"></a></p>
+                                <p><strong>Website:</strong> <a href="#" id="modalWebsite" class="contact-link" target="_blank"></a></p>
+                            </div>
+                        </div>
+                        <div class="detail-section">
+                            <h3>Business Description</h3>
+                            <p id="modalDescription"></p>
+                        </div>
+                        <div class="detail-section">
+                            <h3>AI Opportunity</h3>
+                            <p id="modalOpportunity"></p>
+                        </div>
+                        <div class="detail-section">
+                            <h3>Status & Notes</h3>
+                            <div class="status-controls">
+                                <select class="form-control status-select" id="modalStatus">
+                                    <option value="Not Contacted">Not Contacted</option>
+                                    <option value="Contacted">Contacted</option>
+                                    <option value="Meeting Scheduled">Meeting Scheduled</option>
+                                    <option value="Proposal Sent">Proposal Sent</option>
+                                    <option value="Follow-up Required">Follow-up Required</option>
+                                    <option value="Closed">Closed</option>
+                                </select>
+                                <textarea class="form-control notes-textarea" id="modalNotes" placeholder="Add notes about this prospect..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn--secondary" id="modalCancel">Close</button>
+                    <button class="btn btn--primary" id="modalSave">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
